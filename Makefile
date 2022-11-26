@@ -13,9 +13,12 @@ all: $(BIN)
 $(BIN): $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
 
-$(OBJS): obj/%.o : src/%.c
-	mkdir -p objs
+$(OBJS): obj/%.o : src/%.c obj
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+
+# obj folder
+obj:
+	mkdir -p obj
 
 run: $(BIN)
 	./$<
