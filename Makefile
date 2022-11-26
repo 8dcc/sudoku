@@ -10,10 +10,6 @@ BIN=sudoku.out
 
 all: $(BIN)
 
-test:
-	@echo $(OBJS)
-	@echo $(SRCS)
-
 $(BIN): $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
 
