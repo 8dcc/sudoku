@@ -1,5 +1,8 @@
-#include <stdio.h>
+#include <ncurses.h>
+
+#include "globals.h"
 
 void print_sudoku() {
-    printf("I am a test!\n");
+    mvprintw(YP, XP, "I am a test!");
+    REFRESH_0();
 }

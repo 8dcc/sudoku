@@ -4,7 +4,7 @@
 CC=gcc
 CFLAGS=-Wall
 LDFLAGS=-lncurses
-OBJS=obj/main.o obj/interface.o
+OBJS=obj/main.o obj/interface.o obj/misc.o
 SRCS=$(patsubst %.o, %.c, $(OBJS))
 BIN=sudoku.out
 
