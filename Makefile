@@ -14,6 +14,7 @@ $(BIN): $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
 
 $(OBJS): obj/%.o : src/%.c
+	mkdir -p objs
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
 run: $(BIN)
