@@ -1,13 +1,13 @@
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>    // For va_list
 
 #ifdef __unix__
 #include <unistd.h>    // isatty()
 #endif
 
-void die(const char* fmt, ...);
+#include "defines.h"
+#include "misc.h"
+#include "sudoku.h"
 
 int main(int argc, char** argv) {
     FILE* fd = stdin;
@@ -35,18 +35,13 @@ int main(int argc, char** argv) {
 #endif
     }
 
-    printf("I am the sudoku solver!\n");
+    int arr[ROWS][COLS];
+    int* arr_p = &arr[0][0];
+    init_arr(arr_p);
+
+    print_arr(arr_p);
 
     fclose(fd);
     return 0;
 }
 
-void die(const char* fmt, ...) {
-    va_list va;
-    va_start(va, fmt);
-
-    vfprintf(stderr, fmt, va);
-
-    va_end(va);
-    exit(1);
-}
