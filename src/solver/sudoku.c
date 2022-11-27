@@ -6,11 +6,6 @@ void init_arr(int* arr) {
     for (int y = 0; y < ROWS; y++)
         for (int x = 0; x < COLS; x++)
             arr[ROWS * y + x] = UNK;
-
-    // DELME
-    arr[ROWS * 5 + 3] = 4;
-    arr[ROWS * 2 + 1] = 6;
-    arr[ROWS * 0 + 0] = 1;
 }
 
 void print_arr(int* arr) {
