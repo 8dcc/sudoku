@@ -4,24 +4,46 @@
 CC=gcc
 CFLAGS=-Wall
 LDFLAGS=-lncurses
-OBJS=obj/main.o obj/interface.o obj/misc.o
-SRCS=$(patsubst %.o, %.c, $(OBJS))
-BIN=sudoku.out
 
-all: $(BIN)
+GAME_OBJS=obj/game/main.o obj/game/interface.o obj/game/misc.o
+GAME_SRCS=$(patsubst %.o, %.c, $(OBJS))
+GAME_BIN=sudoku.out
 
-$(BIN): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LDFLAGS)
+SOLVER_OBJS=obj/solver/main.o
+SOLVER_SRCS=$(patsubst %.o, %.c, $(SOLVER_OBJS))
+SOLVER_BIN=solver.out
 
-$(OBJS): obj/%.o : src/%.c obj
+all: $(GAME_BIN) $(SOLVER_BIN)
+
+run: $(GAME_BIN)
+	./$<
+
+# -------------------------------------------
+# Game
+
+$(GAME_BIN): $(GAME_OBJS)
+	$(CC) -o $@ $(GAME_OBJS) $(LDFLAGS)
+
+$(GAME_OBJS): obj/game/%.o : src/game/%.c obj/game
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
 # obj folder
-obj:
-	mkdir -p obj
+obj/game:
+	mkdir -p obj/game
 
-run: $(BIN)
-	./$<
+# -------------------------------------------
+# Solver
+
+$(SOLVER_BIN): $(SOLVER_OBJS)
+	$(CC) -o $@ $(SOLVER_OBJS)
+
+$(SOLVER_OBJS): obj/solver/%.o : src/solver/%.c obj/solver
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+obj/solver:
+	mkdir -p obj/solver
+
+# -------------------------------------------
 
 clean:
 	rm -f $(OBJS)
