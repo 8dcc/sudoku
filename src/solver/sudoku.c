@@ -52,7 +52,7 @@ void print_arr(int* arr) {
     for (int y = 0; y < ROWS; y++) {
         // For showing the main 9 squares (rows)
         if (y % 3 == 0)
-            printf(BOLD);
+            printf("%s", BOLD);
 
         // Border before each row
         for (int x = 0; x < COLS; x++) {
@@ -68,7 +68,7 @@ void print_arr(int* arr) {
 
         // Reset colors if we just drew a bold one
         if (y % 3 == 0)
-            printf(NORM);
+            printf("%s", NORM);
 
         // Row itself
         for (int x = 0; x < COLS; x++) {
@@ -93,11 +93,11 @@ void print_arr(int* arr) {
     }
 
     // Border after last row (bold too)
-    printf(BOLD);
+    printf("%s", BOLD);
     for (int x = 0; x < COLS; x++)
         printf("+---");
     printf("+\n");
-    printf(NORM);
+    printf("%s", NORM);
 }
 
 /*

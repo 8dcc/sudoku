@@ -1,4 +1,11 @@
 
+/*
+ * Comment this line if you don't want colors!
+ * Will not print with colors if not defined, usefull for redirecting the output of
+ * the command.
+ */
+#define USE_COLOR
+
 #define ROWS 9
 #define COLS 9
 
@@ -32,8 +39,16 @@
 #define TC_CYN "\x1B[0;36m"
 #define TC_WHT "\x1B[0;37m"
 
+#ifdef USE_COLOR
 #define BOLD  TC_B_BLU
 #define NORM  TC_NRM
 #define SOFT  TC_GRN
 #define FCOL  TC_B_RED
 #define NFCOL TC_B_GRY
+#else
+#define BOLD  ""
+#define NORM  ""
+#define SOFT  ""
+#define FCOL  ""
+#define NFCOL ""
+#endif
