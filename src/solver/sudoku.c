@@ -1,11 +1,48 @@
 
 #include <stdio.h>
+#include <ctype.h>    // isdigit()
 #include "defines.h"
 
 void init_arr(int* arr) {
     for (int y = 0; y < ROWS; y++)
         for (int x = 0; x < COLS; x++)
-            arr[ROWS * y + x] = UNK;
+            arr[COLS * y + x] = UNK;
+}
+
+static inline int is_valid(int c) {
+    // Digit or '?'
+    return isdigit(c) || c == UNK_C;
+}
+
+static inline int c2i(int c) {
+    // Convert char to int or UNK_C ('?') to UNK int (-1)
+    return (c == UNK_C) ? UNK : c - '0';
+}
+
+int read_arr(FILE* fd, int* arr) {
+    if (!fd || !arr)
+        return 1;
+
+    int c = 0;
+    int x = 0, y = 0;
+
+    while ((c = getc(fd)) != EOF) {
+        // We need the >= instead of just > because arr[COLS] would be out of bounds.
+        // Same with the rows.
+        if (x >= COLS && y < ROWS) {
+            x = 0;
+            y++;
+        }
+
+        // We use the < to check if we are in bounds, keep in mind COLS is the number
+        // of items and not the last valid idx.
+        if (is_valid(c) && x < COLS) {
+            arr[COLS * y + x] = c2i(c);
+            x++;
+        }
+    }
+
+    return 0;
 }
 
 void print_arr(int* arr) {
@@ -40,7 +77,7 @@ void print_arr(int* arr) {
 
             // If array pos is UNK (-1), change color and char
             if (c == UNK) {
-                c       = '?';
+                c       = UNK_C;    // '?'
                 NUM_COL = NFCOL;    // If we are printing '?', change color
             } else {
                 c += '0';

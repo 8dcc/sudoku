@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <string.h>
 
 #ifdef __unix__
 #include <unistd.h>    // isatty()
@@ -12,7 +13,7 @@
 int main(int argc, char** argv) {
     FILE* fd = stdin;
 
-    if (argc > 1) {
+    if (argc > 1 && strcmp(argv[1], "-") != 0) {
         fd = fopen(argv[1], "r");
         if (!fd)
             die("Error. Can't read file \"%s\"\n", argv[1]);
@@ -38,6 +39,9 @@ int main(int argc, char** argv) {
     int arr[ROWS][COLS];
     int* arr_p = &arr[0][0];
     init_arr(arr_p);
+
+    if (read_arr(fd, arr_p) != 0)
+        die("Error reading the file.\nfd:  %p\narr: %p\n", fd, arr_p);
 
     print_arr(arr_p);
 

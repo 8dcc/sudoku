@@ -2,7 +2,8 @@
 #define ROWS 9
 #define COLS 9
 
-#define UNK -1    // Empty sudoku cell ('?')
+#define UNK   -1    // Empty sudoku cell ('?')
+#define UNK_C '?'
 
 /*
  * Color definitions for the terminal. Credits:
@@ -31,8 +32,8 @@
 #define TC_CYN "\x1B[0;36m"
 #define TC_WHT "\x1B[0;37m"
 
-#define BOLD TC_B_BLU
-#define NORM TC_NRM
-#define SOFT TC_GRN
-#define FCOL TC_B_RED
+#define BOLD  TC_B_BLU
+#define NORM  TC_NRM
+#define SOFT  TC_GRN
+#define FCOL  TC_B_RED
 #define NFCOL TC_B_GRY
