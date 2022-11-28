@@ -6,9 +6,11 @@
  */
 #define USE_COLOR
 
-#define ROWS 9
-#define COLS 9
+#define ROWS  9
+#define COLS  9
+#define BOXSZ 9    // Numbers in each box
 
+#define INV   -2    // Invalid char
 #define UNK   -1    // Empty sudoku cell ('?')
 #define UNK_C '?'
 

@@ -44,6 +44,11 @@ int main(int argc, char** argv) {
         die("Error reading the file.\nfd:  %p\narr: %p\n", fd, arr_p);
 
     print_arr(arr_p);
+    solve(arr_p);
+
+    printf(NFCOL "\n| | | | | | | | | | | | | | | | | | |\n"
+                 "v v v v v v v v v v v v v v v v v v v\n\n" NORM);
+    print_arr(arr_p);
 
     fclose(fd);
     return 0;
