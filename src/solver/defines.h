@@ -1,7 +1,7 @@
 
 /*
  * Comment this line if you don't want colors!
- * Will not print with colors if not defined, usefull for redirecting the output of
+ * Will not print with colors if not defined, useful for redirecting the output of
  * the command.
  */
 #define USE_COLOR
