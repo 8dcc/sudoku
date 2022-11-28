@@ -40,15 +40,26 @@ int main(int argc, char** argv) {
     int* arr_p = &arr[0][0];
     init_arr(arr_p);
 
+    int old_empty[ROWS][COLS];
+    int* old_empty_p = &old_empty[0][0];
+    init_arr(old_empty_p);
+
     if (read_arr(fd, arr_p) != 0)
         die("Error reading the file.\nfd:  %p\narr: %p\n", fd, arr_p);
 
-    print_arr(arr_p);
+    // Fill the empty array with 1's where there was an UNK for showing gray chars on
+    // the old positions after solving.
+    for (int y = 0; y < ROWS; y++)
+        for (int x = 0; x < COLS; x++)
+            old_empty[y][x] = (arr[y][x] == UNK);
+
+    print_unk_arr(arr_p);
     solve(arr_p);
 
     printf(NFCOL "\n| | | | | | | | | | | | | | | | | | |\n"
                  "v v v v v v v v v v v v v v v v v v v\n\n" NORM);
-    print_arr(arr_p);
+
+    print_arr(arr_p, old_empty_p);
 
     fclose(fd);
     return 0;

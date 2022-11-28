@@ -50,8 +50,9 @@ int read_arr(FILE* fd, int* arr) {
     return 0;
 }
 
-void print_arr(int* arr) {
-    char c;
+// Will put gray in the number if unk[cur_arr_idx] == 1
+void print_arr(int* arr, int* unk_arr) {
+    int c;
     char* NUM_COL;
 
     for (int y = 0; y < ROWS; y++) {
@@ -77,16 +78,19 @@ void print_arr(int* arr) {
 
         // Row itself
         for (int x = 0; x < COLS; x++) {
-            c       = arr[COLS * y + x];
-            NUM_COL = FCOL;    // Char color when found
+            int idx = COLS * y + x;
 
-            // If array pos is UNK (-1), change color and char
-            if (c == UNK) {
-                c       = UNK_C;    // '?'
-                NUM_COL = NFCOL;    // If we are printing '?', change color
-            } else {
+            c = arr[idx];
+
+            // If array pos is UNK (-1), change char
+            if (c == UNK)
+                c = UNK_C;    // '?'
+            else
                 c += '0';
-            }
+
+            // If we know the current item should be hidden (is 1 in the array),
+            // change colors.
+            NUM_COL = (unk_arr[idx]) ? NFCOL : FCOL;
 
             // For showing the main 9 squares (cols)
             if (x % 3 == 0)
@@ -104,6 +108,17 @@ void print_arr(int* arr) {
     printf("+" NORM "\n");
 }
 
+void print_unk_arr(int* arr) {
+    int empty[ROWS * COLS] = { 0 };
+
+    // Fill the empty array with 1's where there was an UNK
+    for (int y = 0; y < ROWS; y++)
+        for (int x = 0; x < COLS; x++)
+            empty[COLS * y + x] = (arr[COLS * y + x] == UNK);
+
+    print_arr(arr, empty);
+}
+
 static int valid_pos(int* arr, int idx, int num) {
     // Get x and y pos in the arr from idx
     const int yp = idx / COLS;
@@ -111,21 +126,13 @@ static int valid_pos(int* arr, int idx, int num) {
 
     // Check current row
     for (int x = 0; x < COLS; x++)
-        if (arr[COLS * yp + x] == num) {
-            // DELME
-            /* printf("(x%dy%d) Invalid row pos for cell number %d\n", xp, yp, num);
-             */
+        if (arr[COLS * yp + x] == num)
             return 0;
-        }
 
     // Check current col
     for (int y = 0; y < ROWS; y++)
-        if (arr[COLS * y + xp] == num) {
-            // DELME
-            /* printf("(x%dy%d) Invalid col pos for cell number %d\n", xp, yp, num);
-             */
+        if (arr[COLS * y + xp] == num)
             return 0;
-        }
 
     // Idx of cells corresponding to each box by y and x of the box
     static const int boxes[COLS][ROWS][BOXSZ] = {
@@ -157,15 +164,8 @@ static int valid_pos(int* arr, int idx, int num) {
          * items inside that box to check if the number we want to check (num) is any
          * of the indexes that form that box.
          */
-        if (arr[boxes[yp / 3][xp / 3][box_i]] == num) {
-            // DELME
-            /* printf("(x%dy%d) Invalid box pos for cell number %d\n", xp, yp, num);
-             */
+        if (arr[boxes[yp / 3][xp / 3][box_i]] == num)
             return 0;
-        }
-
-    // DELME
-    /* printf("(x%dy%d) Valid pos for cell number %d\n", xp, yp, num); */
 
     return 1;
 }
