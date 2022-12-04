@@ -16,6 +16,13 @@ int main() {
     noecho();                // Don't print when typing
     keypad(stdscr, TRUE);    // Enable keypad (arrow keys)
 
+    // Color
+#ifdef USE_COLOR
+    if (!has_colors())
+        die("Error. Your terminal does not support color.\n"
+            "You can disable it editing src/game/globals.h\n");
+#endif
+
     init_grid(grid);
     init_grid(unk_grid);
 
