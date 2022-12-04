@@ -5,7 +5,7 @@ CC=gcc
 CFLAGS=-Wall
 LDFLAGS=-lncurses
 
-GAME_OBJS=obj/game/main.o obj/game/interface.o obj/game/misc.o
+GAME_OBJS=obj/game/main.o obj/game/sudoku.o obj/game/interface.o obj/game/misc.o
 GAME_BIN=sudoku.out
 
 SOLVER_OBJS=obj/solver/main.o obj/solver/sudoku.o obj/solver/misc.o
