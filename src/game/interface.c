@@ -7,25 +7,35 @@
 void print_sudoku(int* arr, int* unk_arr) {
     move(YP, XP);
 
-    char* NUM_COL;
-
     // Each iteration of y prints 2 lines, the separator before the row, and th row
     for (int y = 0; y < ROWS; y++) {
-        if (y % 3 == 0)
-            printw("%s", BOLD);
+        if (y % 3 == 0) {
+            BOLD_ON();
+            USE_COL(BOLD);
+        }
 
         for (int x = 0; x < COLS; x++) {
-            if (y % 3 != 0 && x % 3 == 0)
-                printw(BOLD "+" SOFT "---");
-            else
+            if (y % 3 != 0 && x % 3 == 0) {
+                BOLD_ON();
+                USE_COL(BOLD);
+                printw("+");
+                BOLD_OFF();
+                USE_COL(SOFT);
+                printw("---");
+            } else {
                 printw("+---");
+            }
         }
-        printw(BOLD "+" NORM);
+        BOLD_ON();
+        USE_COL(BOLD);
+        printw("+");
+        BOLD_OFF();
+        USE_COL(NORM);
         move(YP + y * 2 + 1, XP);
 
-        // Should not be necesary
+        // TODO: Should not be necesary
         if (y % 3 == 0)
-            printw("%s", NORM);
+            USE_COL(NORM);
 
         // Row itself
         for (int x = 0; x < COLS; x++) {
@@ -41,23 +51,40 @@ void print_sudoku(int* arr, int* unk_arr) {
 
             // If we know the current item should be hidden (is 1 in the array),
             // change colors.
-            NUM_COL = (unk_arr[idx]) ? NFCOL : FCOL;
+            int NUM_COL = (unk_arr[idx]) ? NFCOL : FCOL;
 
             // For showing the main 9 squares (cols)
-            if (x % 3 == 0)
-                printw(BOLD "|%s %c " NORM, NUM_COL, c);
-            else
-                printw(SOFT "|%s %c " NORM, NUM_COL, c);
+            if (x % 3 == 0) {
+                BOLD_ON();
+                USE_COL(BOLD);
+            } else {
+                BOLD_OFF();
+                USE_COL(SOFT);
+            }
+
+            printw("|");
+            BOLD_ON();    // Number always bold
+            USE_COL(NUM_COL);
+            printw(" %c ", c);
+            BOLD_OFF();
+            USE_COL(NORM);
         }
-        printw(BOLD "|" NORM);
+        BOLD_ON();
+        USE_COL(BOLD);
+        printw("|");
+        BOLD_OFF();
+        USE_COL(NORM);
         move(YP + y * 2 + 2, XP);
     }
 
+    BOLD_ON();
+    USE_COL(BOLD);
     // Border after last row (bold too)
-    printw("%s", BOLD);
     for (int x = 0; x < COLS; x++)
         printw("+---");
-    printw("+" NORM);
+    printw("+");
+    BOLD_OFF();
+    USE_COL(NORM);
 
     REFRESH_0();
 }

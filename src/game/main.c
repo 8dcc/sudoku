@@ -21,10 +21,24 @@ int main() {
     if (!has_colors())
         die("Error. Your terminal does not support color.\n"
             "You can disable it editing src/game/globals.h\n");
+
+    start_color();
+
+    // Make black gray
+    init_color(COLOR_BLACK, 100, 100, 100);
+
+    init_pair(NORM, COLOR_WHITE, COLOR_BLACK);
+    init_pair(BOLD, COLOR_BLUE, COLOR_BLACK);
+    init_pair(SOFT, COLOR_GREEN, COLOR_BLACK);
+    init_pair(FCOL, COLOR_RED, COLOR_BLACK);
+    init_pair(NFCOL, COLOR_BLACK, COLOR_BLACK);
 #endif
 
     init_grid(grid);
     init_grid(unk_grid);
+
+    // DELME
+    grid[3][1] = 9;
 
     // Fill the empty array with 1's where there was an UNK for showing gray chars on
     // the old positions

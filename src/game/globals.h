@@ -8,6 +8,14 @@
         refresh();  \
     }
 
+#define USE_COL(col) attron(COLOR_PAIR(col))
+
+#define RESET_COL(col) attroff(COLOR_PAIR(col))
+
+#define BOLD_ON() attron(A_BOLD)
+
+#define BOLD_OFF() attroff(A_BOLD)
+
 /* --------------------------------------------------------- */
 /* Defines */
 
@@ -16,7 +24,7 @@
  * Will not print with colors if not defined, useful for redirecting the output of
  * the command.
  */
-/* #define USE_COLOR */
+#define USE_COLOR
 
 #define XP 5    // Position of the sudoku when drawing
 #define YP 3
@@ -37,17 +45,8 @@ extern int unk_grid[ROWS][COLS];
 /* --------------------------------------------------------- */
 /* Colors */
 
-// TODO: Pairs
-#ifdef USE_COLOR
-#define BOLD  TC_B_BLU
-#define NORM  TC_NRM
-#define SOFT  TC_GRN
-#define FCOL  TC_B_RED
-#define NFCOL TC_B_GRY
-#else
-#define BOLD  ""
-#define NORM  ""
-#define SOFT  ""
-#define FCOL  ""
-#define NFCOL ""
-#endif
+#define NORM  1
+#define BOLD  2
+#define SOFT  3
+#define FCOL  4
+#define NFCOL 5
