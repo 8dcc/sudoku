@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ncurses.h>
 
 #include "globals.h"
@@ -10,11 +11,25 @@
 int grid[ROWS][COLS];
 int unk_grid[ROWS][COLS];
 
-int main() {
+int main(int argc, char** argv) {
     initscr();               // Init ncurses
     raw();                   // Scan input without pressing enter
     noecho();                // Don't print when typing
     keypad(stdscr, TRUE);    // Enable keypad (arrow keys)
+
+    // Arguments for difficulty
+    int difficulty = DEFAULT_DIFFICULTY;
+    if (argc > 1) {
+        difficulty = atoi(argv[1]);
+
+        if (difficulty < 1 || difficulty > ROWS * COLS)
+            die("Error. Invalid argument.\n"
+                "Usage:\n"
+                "    %s            - Run with default difficulty.\n"
+                "    %s <number>   - Where number is the number of cells that are "
+                "going to be filled. [%d-%d]\n",
+                argv[0], argv[0], 1, ROWS * COLS);
+    }
 
     // Color
 #ifdef USE_COLOR
@@ -34,8 +49,12 @@ int main() {
     init_pair(NFCOL, COLOR_BLACK, COLOR_BLACK);
 #endif
 
+    // Initialize both grids to UNK
     init_grid(grid);
     init_grid(unk_grid);
+
+    // Generate a valid sudoku
+    generate_sudoku(difficulty);
 
     // Fill the empty array with 1's where there was an UNK for showing gray chars on
     // the old positions

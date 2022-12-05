@@ -24,21 +24,31 @@ void generate_sudoku(int difficulty) {
 
     do {
         int filled_c = 0;
+        int total_c  = 0;
 
-        while (filled_c < difficulty) {
+        /*
+         * Generate valid numbers at random positions until we filled enough. If we
+         * tried too many times (we can't get a valid sudoku for the current
+         * difficulty with the current tries), try an entirely new sudoku. Probably
+         * not the best method but necesary since we are bruteforcing, after all.
+         */
+        while (filled_c < difficulty && total_c < MAX_DIFFICULTY_TRIES) {
             int rand_p = rand() % (ROWS * COLS);
             int rand_n = (rand() % 9) + 1;    // 0-8 -> 1-9
 
-            if (valid_pos(&grid[0][0], rand_p, rand_n)) {
-                // Get x and y from idx
-                int yp, xp;
-                idx2yx(rand_p, &yp, &xp);
+            // Get x and y from idx
+            int yp, xp;
+            idx2yx(rand_p, &yp, &xp);
 
+            // If we can put the random number in the rand position and its empty
+            if (grid[yp][xp] == UNK && valid_pos(&grid[0][0], rand_p, rand_n)) {
                 grid[yp][xp] = rand_n;
 
                 // Count how many we actually filled.
                 filled_c++;
             }
+
+            total_c++;
         }
     } while (0 /* TODO: check if it can't be solved and repeat */);
 }
