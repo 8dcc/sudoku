@@ -33,10 +33,6 @@ void print_sudoku(int* arr, int* unk_arr) {
         USE_COL(NORM);
         move(YP + y * 2 + 1, XP);
 
-        // TODO: Should not be necesary
-        if (y % 3 == 0)
-            USE_COL(NORM);
-
         // Row itself
         for (int x = 0; x < COLS; x++) {
             int idx = COLS * y + x;

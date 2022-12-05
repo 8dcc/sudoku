@@ -37,9 +37,6 @@ int main() {
     init_grid(grid);
     init_grid(unk_grid);
 
-    // DELME
-    grid[3][1] = 9;
-
     // Fill the empty array with 1's where there was an UNK for showing gray chars on
     // the old positions
     for (int y = 0; y < ROWS; y++)
