@@ -27,7 +27,7 @@
 #define USE_COLOR
 
 #define DEFAULT_DIFFICULTY   27
-#define MAX_DIFFICULTY_TRIES 200    // See sudoku.c/generate_sudoku()
+#define MAX_DIFFICULTY_TRIES 500    // See sudoku.c/generate_sudoku()
 
 #define XP 5    // Position of the sudoku when drawing
 #define YP 3

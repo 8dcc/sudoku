@@ -3,6 +3,7 @@
 #include <time.h>      // For time()
 
 #include "globals.h"
+#include "misc.h"
 #include "sudoku.h"
 
 static int valid_pos(int* arr, int idx, int num);
@@ -25,6 +26,9 @@ void generate_sudoku(int difficulty) {
     do {
         int filled_c = 0;
         int total_c  = 0;
+
+        // Set grid to UNK
+        init_grid(grid);
 
         /*
          * Generate valid numbers at random positions until we filled enough. If we
