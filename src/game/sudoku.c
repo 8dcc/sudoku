@@ -18,12 +18,15 @@ do {
 Where difficulty is the parameter and indicates the number of cells to be filled.
 */
 void generate_sudoku(int difficulty) {
-    // Seed for rand()
-    srand(time(NULL));
+    // Only used to make the srand() seed more random
+    int global_c = 0;
 
     do {
         int filled_c = 0;
         int total_c  = 0;
+
+        // Seed for rand()
+        srand(time(NULL) + global_c);
 
         // Set grid to UNK
         init_grid(grid);
@@ -51,6 +54,7 @@ void generate_sudoku(int difficulty) {
             }
 
             total_c++;
+            global_c++;
         }
     } while (0 /* TODO: check if it can't be solved and repeat */);
 }
