@@ -90,16 +90,15 @@ int main(int argc, char** argv) {
 
                 break;
             case 's':
-                if (solve(&grid[0][0], &solved[0][0])) {
-                    // Save current grid as the original one for unk values (gray),
-                    // in case user made changes.
-                    get_unk(&grid[0][0], &unk_grid[0][0]);
+                // We don't need to solve because we already solved when calling
+                // generate_sudoku(), now we just gotta show the solved array.
 
-                    // If it can be solved, replace
-                    copy_grid(&solved[0][0], &grid[0][0]);
-                } else {
-                    mvprintw(MSG_POS + 1, XP, "Current sudoku can't be solved!");
-                }
+                // Save current grid as the original one for unk values (gray),
+                // in case user made changes.
+                get_unk(&grid[0][0], &unk_grid[0][0]);
+
+                // If it can be solved, replace
+                copy_grid(&solved[0][0], &grid[0][0]);
                 break;
             case 'q':
             default:

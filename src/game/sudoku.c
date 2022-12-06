@@ -21,6 +21,7 @@ void generate_sudoku(int difficulty) {
     // Only used to make the srand() seed more random
     int global_c = 0;
 
+    // Generate until the sudoku can be solved
     do {
         int filled_c = 0;
         int total_c  = 0;
@@ -56,7 +57,7 @@ void generate_sudoku(int difficulty) {
             total_c++;
             global_c++;
         }
-    } while (0 /* TODO: check if it can't be solved and repeat */);
+    } while (!solve(&grid[0][0], &solved[0][0]));
 }
 
 // Same as src/solver/sudoku.c
