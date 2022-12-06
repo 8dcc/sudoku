@@ -12,8 +12,11 @@
 #define DEFAULT_DIFFICULTY   27
 #define MAX_DIFFICULTY_TRIES 500    // See sudoku.c/generate_sudoku()
 
-#define XP 5    // Position of the sudoku when drawing
-#define YP 3
+#define XP     5    // Position of the sudoku when drawing
+#define YP     3
+#define MARGIN 3
+
+#define MSG_POS (YP + (ROWS * 2 + 1))
 
 #define ROWS  9
 #define COLS  9
@@ -40,6 +43,14 @@ extern int solved[ROWS][COLS];
 
 /* --------------------------------------------------------- */
 /* Macros */
+
+#define SHOW_HELP(idx, text) mvprintw(MSG_POS + MARGIN + idx, XP, text)
+
+#define CLEAR_LINE(y) \
+    {                 \
+        move(y, 0);   \
+        clrtoeol();   \
+    }
 
 #define REFRESH_0() \
     {               \

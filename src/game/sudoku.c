@@ -6,8 +6,6 @@
 #include "misc.h"
 #include "sudoku.h"
 
-static int valid_pos(int* arr, int idx, int num);
-
 /*
 do {
     filled = 0;
@@ -114,3 +112,50 @@ void idx2yx(int idx, int* y, int* x) {
     *y = idx / COLS;
     *x = idx - *y * COLS;
 }
+
+/*
+ * solve: Will try to solve input into output, return 1 if success, 0 if failure.
+ * See src/solver/sudoku.c for comments.
+ */
+int solve(int* input, int* output) {
+    int ucells[ROWS * COLS] = { 0 };
+    int ucells_last         = 0;
+
+    // First, copy input to output, then use output just like we used arr in
+    // src/solver/sudoku.c
+    copy_grid(input, output);
+
+    for (int y = 0; y < ROWS; y++)
+        for (int x = 0; x < COLS; x++)
+            if (output[COLS * y + x] == UNK)
+                ucells[ucells_last++] = COLS * y + x;
+
+    int found_valid = 0;
+
+    for (int i = 0; i < ucells_last; i++) {
+        found_valid = 0;
+
+        int first_check = (output[ucells[i]] == UNK) ? 1 : output[ucells[i]];
+        for (int n = first_check; n <= 9; n++) {
+            if (valid_pos(output, ucells[i], n)) {
+                found_valid = n;
+                break;
+            }
+        }
+
+        if (found_valid > 0) {
+            output[ucells[i]] = found_valid;
+        } else {
+            // Can't find a valid number for the first unknown cell
+            if (i < 1)
+                return 0;
+
+            output[ucells[i]] = UNK;
+
+            i -= 2;
+        }
+    }
+
+    return 1;
+}
+
