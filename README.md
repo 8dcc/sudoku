@@ -31,7 +31,7 @@ If you don't want the solver program to show colors (for example for some window
 
 ### Using the game
 Simply run:
-```
+```console
 $ ./sudoku.out --help
 Usage:
     ./sudoku.out            - Run with default difficulty.
