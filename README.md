@@ -18,6 +18,7 @@ make
 ```
 
 If you don't want the game to show colors (for ncurses) simply comment this line in [`src/game/globals.h`](src/game/globals.h).
+
 If you don't want the solver program to show colors (for example for some windows terminals or for redirecting the output) simply comment this line in [`src/solver/defines.h`](src/solver/defines.h).
 
 ```c
