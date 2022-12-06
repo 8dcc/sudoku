@@ -1,14 +1,4 @@
 
-/*--------------------------------------------------------------------------------*/
-// Functions
-
 void print_sudoku(int* arr, int* unk_arr);
+void init_cursor(int* cy, int* cx, int* unk_grid);
 
-/*--------------------------------------------------------------------------------*/
-// Macros
-
-#define REFRESH_0() \
-    {               \
-        move(0, 0); \
-        refresh();  \
-    }
