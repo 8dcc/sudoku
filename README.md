@@ -17,6 +17,7 @@ make solver.out
 make
 ```
 
+If you don't want the game to show colors (for ncurses) simply comment this line in [`src/game/globals.h`](src/game/globals.h).
 If you don't want the solver program to show colors (for example for some windows terminals or for redirecting the output) simply comment this line in [`src/solver/defines.h`](src/solver/defines.h).
 
 ```c
@@ -27,6 +28,16 @@ If you don't want the solver program to show colors (for example for some window
  */
 #define USE_COLOR
 ```
+
+### Using the game
+Simply run:
+```
+$ ./sudoku.out --help
+Usage:
+    ./sudoku.out            - Run with default difficulty.
+    ./sudoku.out <number>   - Where number is the number of cells that are going to be filled. [1-80]
+```
+
 ### Using the solver
 The solver program will try to read from the filename specified as argument, or stdin if none. The program checks if stdin is a piped file or command output (only on linux) and prints the usage if not.
 ```console
@@ -41,7 +52,7 @@ $ cat filename.txt | ./solver.out
 
 $ ./solver.out      # Will only check for pipes on linux
 Usage:
-   ./solver.out file.txt
-   ./solver.out < file.txt
+    ./solver.out file.txt
+    ./solver.out < file.txt
 
 ```
