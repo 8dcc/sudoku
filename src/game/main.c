@@ -79,9 +79,13 @@ int main(int argc, char** argv) {
      */
     get_unk(&grid[0][0], &unk_grid[0][0]);
 
-    int c = 0;
+    int cursor_y = 0, cursor_x = 0;
+    init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
+
+    int c = 0;    // Char the user is pressing
     do {
         print_sudoku(&grid[0][0], &unk_grid[0][0]);
+        move(cursor_y, cursor_x);
 
         // Get user input
         c = tolower(getch());
@@ -95,6 +99,9 @@ int main(int argc, char** argv) {
                 // Update unknown positions
                 get_unk(&grid[0][0], &unk_grid[0][0]);
 
+                // Move cursor to first unknown cell
+                init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
+
                 break;
             case 's':
                 // We don't need to solve because we already solved when calling
@@ -106,6 +113,10 @@ int main(int argc, char** argv) {
 
                 // If it can be solved, replace
                 copy_grid(&solved[0][0], &grid[0][0]);
+
+                // Move cursor to first unknown cell
+                init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
+
                 break;
             case 'q':
             default:

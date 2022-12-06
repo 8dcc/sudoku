@@ -45,9 +45,9 @@ void print_sudoku(int* arr, int* unk_arr) {
             else
                 c += '0';
 
+#ifdef USE_COLOR
             // If we know the current item should be hidden (is 1 in the array),
             // change colors.
-#ifdef USE_COLOR
             int NUM_COL = (unk_arr[idx]) ? NFCOL : FCOL;
 #endif
 
@@ -86,3 +86,29 @@ void print_sudoku(int* arr, int* unk_arr) {
 
     REFRESH_0();
 }
+
+// Arr cell to position on screen
+static inline void arr2screen(int* y, int* x) {
+    *y = YP + (*y * 2) + 1;
+    *x = XP + (*x * 4) + 2;
+}
+
+// Set cx and cy to the screen position of the first unknown cell
+void init_cursor(int* cy, int* cx, int* unk_grid) {
+    for (int y = 0; y < ROWS; y++) {
+        for (int x = 0; x < COLS; x++) {
+            if (unk_grid[COLS * y + x]) {
+                arr2screen(&y, &x);
+                *cy = y;
+                *cx = x;
+                return;
+            }
+        }
+    }
+
+    *cy = 0;
+    *cx = 0;
+}
+
+// TODO: screen2arr for moving cursor to next cell
+// TODO: Move cursor
