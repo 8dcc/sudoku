@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>    // For tolower()
 #include <ncurses.h>
 
@@ -24,7 +25,13 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         difficulty = atoi(argv[1]);
 
-        if (difficulty < 1 || difficulty >= ROWS * COLS)
+        if (strcmp(argv[1], "--help") == 0)
+            die("Usage:\n"
+                "    %s            - Run with default difficulty.\n"
+                "    %s <number>   - Where number is the number of cells that are "
+                "going to be filled. [%d-%d]\n",
+                argv[0], argv[0], 1, ROWS * COLS - 1);
+        else if (difficulty < 1 || difficulty >= ROWS * COLS)
             die("Error. Invalid argument.\n"
                 "Usage:\n"
                 "    %s            - Run with default difficulty.\n"
