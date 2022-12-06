@@ -47,7 +47,9 @@ void print_sudoku(int* arr, int* unk_arr) {
 
             // If we know the current item should be hidden (is 1 in the array),
             // change colors.
+#ifdef USE_COLOR
             int NUM_COL = (unk_arr[idx]) ? NFCOL : FCOL;
+#endif
 
             // For showing the main 9 squares (cols)
             if (x % 3 == 0) {

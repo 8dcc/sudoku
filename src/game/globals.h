@@ -1,22 +1,5 @@
 
 /* --------------------------------------------------------- */
-/* Macros */
-
-#define REFRESH_0() \
-    {               \
-        move(0, 0); \
-        refresh();  \
-    }
-
-#define USE_COL(col) attron(COLOR_PAIR(col))
-
-#define RESET_COL(col) attroff(COLOR_PAIR(col))
-
-#define BOLD_ON() attron(A_BOLD)
-
-#define BOLD_OFF() attroff(A_BOLD)
-
-/* --------------------------------------------------------- */
 /* Defines */
 
 /*
@@ -44,6 +27,7 @@
 
 extern int grid[ROWS][COLS];
 extern int unk_grid[ROWS][COLS];
+extern int solved[ROWS][COLS];
 
 /* --------------------------------------------------------- */
 /* Colors */
@@ -53,3 +37,24 @@ extern int unk_grid[ROWS][COLS];
 #define SOFT  3
 #define FCOL  4
 #define NFCOL 5
+
+/* --------------------------------------------------------- */
+/* Macros */
+
+#define REFRESH_0() \
+    {               \
+        move(0, 0); \
+        refresh();  \
+    }
+
+#ifdef USE_COLOR
+#define USE_COL(col)   attron(COLOR_PAIR(col))
+#define RESET_COL(col) attroff(COLOR_PAIR(col))
+#define BOLD_ON()      attron(A_BOLD)
+#define BOLD_OFF()     attroff(A_BOLD)
+#else
+#define USE_COL(col)
+#define RESET_COL(col)
+#define BOLD_ON()
+#define BOLD_OFF()
+#endif
