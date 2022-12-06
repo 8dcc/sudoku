@@ -40,12 +40,6 @@ int main(int argc, char** argv) {
                 argv[0], argv[0], 1, ROWS * COLS - 1);
     }
 
-    SHOW_HELP(0, "Keybinds:");
-    SHOW_HELP(1, "    Arrows | Move through the sudoku (WIP).");
-    SHOW_HELP(2, "    s      | Solve the sudoku in the current state.");
-    SHOW_HELP(3, "    g      | Generate a new sudoku.");
-    SHOW_HELP(4, "    q      | Quit.");
-
     // Color
 #ifdef USE_COLOR
     if (!has_colors())
@@ -63,6 +57,12 @@ int main(int argc, char** argv) {
     init_pair(FCOL, COLOR_RED, COLOR_BLACK);
     init_pair(NFCOL, COLOR_BLACK, COLOR_BLACK);
 #endif
+
+    SHOW_HELP_TITLE("Keybinds:");
+    SHOW_HELP(0, "Arrows", "Move through the sudoku (WIP).");
+    SHOW_HELP(1, "s", "Solve the sudoku in the current state.");
+    SHOW_HELP(2, "g", "Generate a new sudoku.");
+    SHOW_HELP(3, "q", "Quit.");
 
     // Initialize grids to UNK
     init_grid(grid);

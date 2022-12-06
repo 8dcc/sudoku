@@ -42,8 +42,6 @@ extern int solved[ROWS][COLS];
 /* --------------------------------------------------------- */
 /* Macros */
 
-#define SHOW_HELP(idx, text) mvprintw(MSG_POS + MARGIN + idx, XP, text)
-
 #define CLEAR_LINE(y) \
     {                 \
         move(y, 0);   \
@@ -66,4 +64,28 @@ extern int solved[ROWS][COLS];
 #define RESET_COL(col)
 #define BOLD_ON()
 #define BOLD_OFF()
+#endif
+
+#ifdef USE_COLOR
+#define SHOW_HELP_TITLE(text)                 \
+    {                                         \
+        BOLD_ON();                            \
+        mvprintw(MSG_POS + MARGIN, XP, text); \
+        BOLD_OFF();                           \
+    }
+
+#define SHOW_HELP(idx, key, text)             \
+    {                                         \
+        move(MSG_POS + MARGIN + idx + 1, XP); \
+        printw("    %6s ", key);              \
+        BOLD_ON();                            \
+        printw("|");                          \
+        BOLD_OFF();                           \
+        printw(" %s", text);                  \
+    }
+#else
+#define SHOW_HELP_TITLE(text) mvprintw(MSG_POS + MARGIN, XP, text)
+
+#define SHOW_HELP(idx, key, text) \
+    mvprintw(MSG_POS + MARGIN + idx + 1, XP, "    %6s | %s", key, text)
 #endif
