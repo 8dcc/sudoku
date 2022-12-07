@@ -59,10 +59,11 @@ int main(int argc, char** argv) {
 #endif
 
     SHOW_HELP_TITLE("Keybinds:");
-    SHOW_HELP(0, "Arrows", "Move through the sudoku (WIP).");
-    SHOW_HELP(1, "s", "Solve the sudoku in the current state.");
-    SHOW_HELP(2, "g", "Generate a new sudoku.");
-    SHOW_HELP(3, "q", "Quit.");
+    SHOW_HELP(0, "Arrows", "Move through the sudoku.");
+    SHOW_HELP(1, "0-9", "Change state of unknown cell (WIP).");
+    SHOW_HELP(2, "s", "Solve the sudoku in the current state.");
+    SHOW_HELP(3, "g", "Generate a new sudoku.");
+    SHOW_HELP(4, "q", "Quit.");
 
     // Initialize grids to UNK
     init_grid(grid);
@@ -94,6 +95,10 @@ int main(int argc, char** argv) {
         CLEAR_LINE(MSG_POS + 1);
         switch (c) {
             case 'g':
+                // In case it takes some time (big numbers, ~50-80)
+                OUTPUT_MSG("Generating sudoku with difficulty %d...", difficulty);
+                REFRESH_0();
+
                 generate_sudoku(difficulty);
 
                 // Update unknown positions
@@ -101,6 +106,9 @@ int main(int argc, char** argv) {
 
                 // Move cursor to first unknown cell
                 init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
+
+                // Will refresh in next iteration of the main loop
+                OUTPUT_MSG("Finished generating sudoku");
 
                 break;
             case 's':
@@ -118,13 +126,27 @@ int main(int argc, char** argv) {
                 init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
 
                 break;
+            case KEY_UARROW:
+                move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], UP);
+                break;
+            case KEY_DARROW:
+                move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], DOWN);
+                break;
+            case KEY_LARROW:
+                move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], LEFT);
+                break;
+            case KEY_RARROW:
+                move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], RIGHT);
+                break;
+            case KEY_CTRLC:
+                c = 'q';
+                break;
             case 'q':
             default:
                 break;
         }
     } while (c != 'q');
 
-    printf("Finished.\n");
     endwin();
     return 0;
 }

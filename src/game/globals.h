@@ -7,21 +7,39 @@
  */
 #define USE_COLOR
 
+// See sudoku.c/generate_sudoku()
 #define DEFAULT_DIFFICULTY   27
-#define MAX_DIFFICULTY_TRIES 500    // See sudoku.c/generate_sudoku()
+#define MAX_DIFFICULTY_TRIES 500
 
-#define XP     5    // Position of the sudoku when drawing
+// Position of the sudoku when drawing
+#define XP     5
 #define YP     3
 #define MARGIN 3
 
+// Position right after the sudopu
 #define MSG_POS (YP + (ROWS * 2 + 1))
 
+// Cells on Y, X and in each box
 #define ROWS  9
 #define COLS  9
-#define BOXSZ 9    // Numbers in each box
+#define BOXSZ 9
 
-#define UNK   -1    // Empty sudoku cell ('?')
+// Indicators for unknown cells and displaying unknown cells
+#define UNK   -1
 #define UNK_C '?'
+
+// Directions for moving the cursor
+#define UP    1
+#define DOWN  2
+#define LEFT  3
+#define RIGHT 4
+
+// Special keys
+#define KEY_UARROW 259
+#define KEY_DARROW 258
+#define KEY_LARROW 260
+#define KEY_RARROW 261
+#define KEY_CTRLC  3
 
 /* --------------------------------------------------------- */
 /* Globals */
@@ -52,6 +70,12 @@ extern int solved[ROWS][COLS];
     {               \
         move(0, 0); \
         refresh();  \
+    }
+
+#define OUTPUT_MSG(...)                         \
+    {                                           \
+        CLEAR_LINE(MSG_POS + 1);                \
+        mvprintw(MSG_POS + 1, XP, __VA_ARGS__); \
     }
 
 #ifdef USE_COLOR

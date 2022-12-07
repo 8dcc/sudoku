@@ -93,6 +93,42 @@ static inline void arr2screen(int* y, int* x) {
     *x = XP + (*x * 4) + 2;
 }
 
+// Screen position to arr cell
+static inline void screen2arr(int* y, int* x) {
+    *y = (*y - YP - 1) / 2;
+    *x = (*x - XP - 2) / 4;
+}
+
+// Returns the closest unknown cell on the current Y. If both deltas are the same, it
+// will go to the left.
+static inline int closest_unk(int oy, int ox, int* unk_grid) {
+    int l_delta = COLS;
+    int r_delta = COLS;
+    int x;
+
+    // Get delta from closest to the left
+    for (x = ox; x >= 0; x--) {
+        if (unk_grid[COLS * oy + x]) {
+            l_delta = ox - x;
+            break;
+        }
+    }
+    // Get delta from closest to the right
+    for (x = ox + 1; x < COLS; x++) {
+        if (unk_grid[COLS * oy + x]) {
+            r_delta = x - ox;
+            break;
+        }
+    }
+
+    // If the closest unknown is to the left, subtract the left delta, else,
+    // add the right delta.
+    x = (l_delta <= r_delta) ? ox - l_delta : ox + r_delta;
+
+    // Return x if in range, original x otherwise
+    return (x >= 0 && x < COLS) ? x : ox;
+}
+
 // Set cx and cy to the screen position of the first unknown cell
 void init_cursor(int* cy, int* cx, int* unk_grid) {
     for (int y = 0; y < ROWS; y++) {
@@ -110,5 +146,68 @@ void init_cursor(int* cy, int* cx, int* unk_grid) {
     *cx = 0;
 }
 
-// TODO: screen2arr for moving cursor to next cell
-// TODO: Move cursor
+// Move cursor to the next unknown cell depending on dir
+void move_cursor(int* cy, int* cx, int* unk_grid, int dir) {
+    int arr_y = *cy, arr_x = *cx;
+    screen2arr(&arr_y, &arr_x);
+
+    switch (dir) {
+        case UP:
+            // Decrease y (move up)
+            if (arr_y > 0)
+                arr_y--;
+
+            // Get closest unknown in the new Y
+            arr_x = closest_unk(arr_y, arr_x, unk_grid);
+
+            // Convert to screen coordinates and write to cursor
+            arr2screen(&arr_y, &arr_x);
+            *cy = arr_y;
+            *cx = arr_x;
+
+            break;
+        case DOWN:
+            // Increase y (move down)
+            if (arr_y < ROWS - 1)
+                arr_y++;
+
+            // Get closest unknown in the new Y
+            arr_x = closest_unk(arr_y, arr_x, unk_grid);
+
+            // Convert to screen coordinates and write to cursor
+            arr2screen(&arr_y, &arr_x);
+            *cy = arr_y;
+            *cx = arr_x;
+
+            break;
+        case LEFT:
+            // Go from the current x to 0, until we encounter an unk cell
+            for (int x = arr_x - 1; x >= 0; x--) {
+                if (unk_grid[COLS * arr_y + x]) {
+                    arr2screen(&arr_y, &x);
+                    *cy = arr_y;
+                    *cx = x;
+                    break;
+                }
+            }
+
+            break;
+        case RIGHT:
+            // Go from the current x to the end of the row, until we encounter an unk
+            // cell.
+            for (int x = arr_x + 1; x < COLS; x++) {
+                if (unk_grid[COLS * arr_y + x]) {
+                    arr2screen(&arr_y, &x);
+                    *cy = arr_y;
+                    *cx = x;
+                    break;
+                }
+            }
+
+            break;
+        default:
+            OUTPUT_MSG("move_cursor: unknown dir %d", dir);
+            break;
+    }
+}
+
