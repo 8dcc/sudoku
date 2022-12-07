@@ -58,20 +58,25 @@ int main(int argc, char** argv) {
     init_pair(NFCOL, COLOR_BLACK, COLOR_BLACK);
 #endif
 
-    SHOW_HELP_TITLE("Keybinds:");
-    SHOW_HELP(0, "Arrows", "Move through the sudoku.");
-    SHOW_HELP(1, "0-9", "Change state of unknown cell (WIP).");
-    SHOW_HELP(2, "s", "Solve the sudoku in the current state.");
-    SHOW_HELP(3, "g", "Generate a new sudoku.");
-    SHOW_HELP(4, "q", "Quit.");
-
     // Initialize grids to UNK
     init_grid(grid);
     init_grid(unk_grid);
     init_grid(solved);
 
+    // If difficulty is high, generation might take a while
+    if (difficulty > 35) {
+        mvprintw(1, 2, "Generating sudoku with difficulty %d...", difficulty);
+        refresh();
+    }
+
     // Generate a valid sudoku
     generate_sudoku(difficulty);
+
+    // Clear line after generating
+    if (difficulty > 35) {
+        CLEAR_LINE(1);
+        refresh();
+    }
 
     /* Fill the empty array with 1's where there was an UNK for showing gray chars on
      * the old positions:
@@ -82,6 +87,14 @@ int main(int argc, char** argv) {
 
     int cursor_y = 0, cursor_x = 0;
     init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
+
+    // Show keybinds before the main loop
+    SHOW_HELP_TITLE("Keybinds:");
+    SHOW_HELP(0, "Arrows", "Move through the sudoku.");
+    SHOW_HELP(1, "0-9", "Change state of unknown cell (WIP).");
+    SHOW_HELP(2, "s", "Solve the sudoku in the current state.");
+    SHOW_HELP(3, "g", "Generate a new sudoku.");
+    SHOW_HELP(4, "q", "Quit.");
 
     int c = 0;    // Char the user is pressing
     do {
@@ -96,8 +109,11 @@ int main(int argc, char** argv) {
         switch (c) {
             case 'g':
                 // In case it takes some time (big numbers, ~50-80)
-                OUTPUT_MSG("Generating sudoku with difficulty %d...", difficulty);
-                REFRESH_0();
+                if (difficulty > 35) {
+                    OUTPUT_MSG("Generating sudoku with difficulty %d...",
+                               difficulty);
+                    REFRESH_0();
+                }
 
                 generate_sudoku(difficulty);
 
@@ -108,7 +124,8 @@ int main(int argc, char** argv) {
                 init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
 
                 // Will refresh in next iteration of the main loop
-                OUTPUT_MSG("Finished generating sudoku");
+                if (difficulty > 35)
+                    OUTPUT_MSG("Finished generating sudoku");
 
                 break;
             case 's':
