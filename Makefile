@@ -11,6 +11,8 @@ GAME_BIN=sudoku.out
 SOLVER_OBJS=obj/solver/main.o obj/solver/sudoku.o obj/solver/misc.o
 SOLVER_BIN=solver.out
 
+.PHONY: clean all run
+
 all: $(GAME_BIN) $(SOLVER_BIN)
 
 run: $(GAME_BIN)
