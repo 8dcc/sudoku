@@ -47,6 +47,7 @@
 extern int grid[ROWS][COLS];
 extern int unk_grid[ROWS][COLS];
 extern int solved[ROWS][COLS];
+extern int altered_sudoku;
 
 /* --------------------------------------------------------- */
 /* Colors */

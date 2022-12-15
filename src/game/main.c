@@ -10,9 +10,11 @@
 #include "sudoku.h"
 #include "interface.h"
 
+// Initialize externs from globals.h
 int grid[ROWS][COLS];
 int unk_grid[ROWS][COLS];
 int solved[ROWS][COLS];
+int altered_sudoku = 0;
 
 int main(int argc, char** argv) {
     initscr();               // Init ncurses
@@ -91,7 +93,7 @@ int main(int argc, char** argv) {
     // Show keybinds before the main loop
     SHOW_HELP_TITLE("Keybinds:");
     SHOW_HELP(0, "Arrows", "Move through the sudoku.");
-    SHOW_HELP(1, "0-9", "Change state of unknown cell (WIP).");
+    SHOW_HELP(1, "0-9", "Change state of unknown cell.");
     SHOW_HELP(2, "s", "Solve the sudoku in the current state.");
     SHOW_HELP(3, "g", "Generate a new sudoku.");
     SHOW_HELP(4, "q", "Quit.");
@@ -129,12 +131,22 @@ int main(int argc, char** argv) {
 
                 break;
             case 's':
-                // We don't need to solve because we already solved when calling
-                // generate_sudoku(), now we just gotta show the solved array.
+                // If we altered the sudoku since we generated it (solved array is
+                // not valid), solve it again.
+                if (altered_sudoku) {
+                    // Try to solve, if we can't, show error and stop
+                    if (!solve(&grid[0][0], &solved[0][0])) {
+                        OUTPUT_MSG("Current sudoku can't be solved!");
+                        break;
+                    }
+                }
 
                 // Save current grid as the original one for unk values (gray),
                 // in case user made changes.
                 get_unk(&grid[0][0], &unk_grid[0][0]);
+
+                // We don't need to solve, now we just gotta show the solved array
+                // See generate_sudoku()
 
                 // If it can be solved, replace
                 copy_grid(&solved[0][0], &grid[0][0]);
@@ -142,6 +154,17 @@ int main(int argc, char** argv) {
                 // Move cursor to first unknown cell
                 init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
 
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                write_cell(&cursor_y, &cursor_x, &grid[0][0], &unk_grid[0][0], c);
                 break;
             case KEY_UARROW:
                 move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], UP);

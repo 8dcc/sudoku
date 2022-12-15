@@ -58,6 +58,9 @@ void generate_sudoku(int difficulty) {
             global_c++;
         }
     } while (!solve(&grid[0][0], &solved[0][0]));
+
+    // The new sudoku has not been altered for now
+    altered_sudoku = 0;
 }
 
 // Same as src/solver/sudoku.c

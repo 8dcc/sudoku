@@ -2,6 +2,7 @@
 #include <ncurses.h>
 
 #include "globals.h"
+#include "sudoku.h"    // For valid_pos
 
 // See src/solver/sudoku.c
 void print_sudoku(int* arr, int* unk_arr) {
@@ -209,5 +210,38 @@ void move_cursor(int* cy, int* cx, int* unk_grid, int dir) {
             OUTPUT_MSG("move_cursor: unknown dir %d", dir);
             break;
     }
+}
+
+void write_cell(int* cy, int* cx, int* grid, int* unk_grid, int c) {
+    int y = *cy, x = *cx;
+    screen2arr(&y, &x);
+
+    // Char out of bounds
+    if (c < '1' || c > '9') {
+        OUTPUT_MSG("Could not write char %c (%d) to cell.", c, c);
+        return;
+    }
+
+    // If the cell on the original grid is not unknown
+    if (!unk_grid[COLS * y + x]) {
+        OUTPUT_MSG("Tried to write to a known cell at (y%d, x%d)", y, x);
+        return;
+    }
+
+    // Digit to int
+    c -= '0';
+
+    // If it's there, it would be invalid so don't do anything else
+    if (grid[COLS * y + x] == c)
+        return;
+
+    // If the current number is not valid
+    if (!valid_pos(grid, COLS * y + x, c)) {
+        OUTPUT_MSG("Invalid position for '%d' at (y%d, x%d)", c, y, x);
+        return;
+    }
+
+    grid[COLS * y + x] = c;
+    altered_sudoku     = 1;
 }
 
