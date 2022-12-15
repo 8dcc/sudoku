@@ -14,6 +14,9 @@ void init_grid(int arr[ROWS][COLS]) {
 
 // Sorry intel assembly syntax
 void copy_grid(int* src, int* dest) {
+    if (src == dest)
+        return;
+
     for (int y = 0; y < ROWS; y++)
         for (int x = 0; x < COLS; x++)
             dest[COLS * y + x] = src[COLS * y + x];
