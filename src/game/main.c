@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         difficulty = atoi(argv[1]);
 
-        if (strcmp(argv[1], "--help") == 0)
+        if (strncmp(argv[1], "-h", 2) == 0 || strncmp(argv[1], "--help", 6) == 0)
             die("Usage:\n"
                 "    %s            - Run with default difficulty.\n"
                 "    %s <number>   - Where number is the number of cells that are "
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
     init_grid(solved);
 
     // If difficulty is high, generation might take a while
-    if (difficulty > 35) {
+    if (difficulty > MIN_LOADING_DIFICULTY) {
         mvprintw(1, 2, "Generating sudoku with difficulty %d...", difficulty);
         refresh();
     }
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
     generate_sudoku(difficulty);
 
     // Clear line after generating
-    if (difficulty > 35) {
+    if (difficulty > MIN_LOADING_DIFICULTY) {
         CLEAR_LINE(1);
         refresh();
     }
@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
         switch (c) {
             case 'g':
                 // In case it takes some time (big numbers, ~50-80)
-                if (difficulty > 35) {
+                if (difficulty > MIN_LOADING_DIFICULTY) {
                     OUTPUT_MSG("Generating sudoku with difficulty %d...",
                                difficulty);
                     REFRESH_0();
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
                 init_cursor(&cursor_y, &cursor_x, &unk_grid[0][0]);
 
                 // Will refresh in next iteration of the main loop
-                if (difficulty > 35)
+                if (difficulty > MIN_LOADING_DIFICULTY)
                     OUTPUT_MSG("Finished generating sudoku");
 
                 break;

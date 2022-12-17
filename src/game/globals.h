@@ -11,6 +11,10 @@
 #define DEFAULT_DIFFICULTY   27
 #define MAX_DIFFICULTY_TRIES 500
 
+// Minimum difficulty before displaying loading screen (Generating sudoku with
+// difficulty ...)
+#define MIN_LOADING_DIFICULTY 35
+
 // Position of the sudoku when drawing
 #define XP     5
 #define YP     3
