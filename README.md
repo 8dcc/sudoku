@@ -4,7 +4,7 @@
 ### Compiling
 Simply run:
 ```bash
-git clone https://github.com/r4v10l1/sudoku
+git clone https://github.com/8dcc/sudoku
 cd sudoku
 
 # For the game itself
