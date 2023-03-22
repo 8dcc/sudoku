@@ -3,7 +3,7 @@
 
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=-lncurses
+LDFLAGS=-lncurses -ltinfo
 
 GAME_OBJS=obj/game/main.o obj/game/sudoku.o obj/game/interface.o obj/game/misc.o
 GAME_BIN=sudoku.out
