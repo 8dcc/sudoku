@@ -92,11 +92,12 @@ int main(int argc, char** argv) {
 
     // Show keybinds before the main loop
     SHOW_HELP_TITLE("Keybinds:");
-    SHOW_HELP(0, "Arrows", "Move through the sudoku.");
-    SHOW_HELP(1, "1-9", "Change state of unknown cell.");
-    SHOW_HELP(2, "s", "Solve the sudoku in the current state.");
-    SHOW_HELP(3, "g", "Generate a new sudoku.");
-    SHOW_HELP(4, "q", "Quit.");
+    SHOW_HELP(0, "Arrows", "Move through the sudoku");
+    SHOW_HELP(1, "hjkl", "Move through the sudoku");
+    SHOW_HELP(2, "1-9", "Change state of unknown cell");
+    SHOW_HELP(3, "s", "Solve the sudoku in the current state");
+    SHOW_HELP(4, "g", "Generate a new sudoku");
+    SHOW_HELP(5, "q", "Quit");
 
     int c = 0;    // Char the user is pressing
     do {
@@ -166,15 +167,19 @@ int main(int argc, char** argv) {
             case '9':
                 write_cell(&cursor_y, &cursor_x, &grid[0][0], &unk_grid[0][0], c);
                 break;
+            case 'k':
             case KEY_UARROW:
                 move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], UP);
                 break;
+            case 'j':
             case KEY_DARROW:
                 move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], DOWN);
                 break;
+            case 'h':
             case KEY_LARROW:
                 move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], LEFT);
                 break;
+            case 'l':
             case KEY_RARROW:
                 move_cursor(&cursor_y, &cursor_x, &unk_grid[0][0], RIGHT);
                 break;
