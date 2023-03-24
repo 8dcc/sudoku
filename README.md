@@ -1,7 +1,10 @@
 # Sudoku
 **Simple sudoku for the terminal using ncurses and written in C.**
 
-### Compiling
+![ss1](https://user-images.githubusercontent.com/29655971/227586109-f89fe2d0-bc6c-4d11-9c30-dd0d8eac2565.png)
+![ss2](https://user-images.githubusercontent.com/29655971/227586117-b1c33200-f3c5-409d-b168-860b6a22002c.png)
+
+### Building
 Simply run:
 ```bash
 git clone https://github.com/8dcc/sudoku
@@ -17,9 +20,9 @@ make solver.out
 make
 ```
 
-If you don't want the game to show colors (for ncurses) simply comment this line in [`src/game/globals.h`](src/game/globals.h).
+If you don't want the **game** to show colors (for ncurses) simply comment this line in [`src/game/globals.h`](https://github.com/8dcc/sudoku/blob/dabfb31086e15f60f837844885fabe533d98c2aa/src/game/globals.h#L5-L8).
 
-If you don't want the solver program to show colors (for example for some windows terminals or for redirecting the output) simply comment this line in [`src/solver/defines.h`](src/solver/defines.h).
+If you don't want the **solver** program to show colors (for example for some windows terminals or for redirecting the output) simply comment this line in [`src/solver/defines.h`](https://github.com/8dcc/sudoku/blob/dabfb31086e15f60f837844885fabe533d98c2aa/src/solver/defines.h#L2-L7).
 
 ```c
 /*
@@ -30,7 +33,7 @@ If you don't want the solver program to show colors (for example for some window
 #define USE_COLOR
 ```
 
-### Using the game
+### Playing the game
 Simply run:
 ```console
 $ ./sudoku.out --help
