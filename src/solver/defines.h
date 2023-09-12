@@ -1,8 +1,8 @@
 
 /*
  * Comment this line if you don't want colors!
- * Will not print with colors if not defined, useful for redirecting the output of
- * the command.
+ * Will not print with colors if not defined, useful for redirecting the output
+ * of the command.
  */
 #define USE_COLOR
 
@@ -14,12 +14,9 @@
 #define UNK   -1    // Empty sudoku cell ('?')
 #define UNK_C '?'
 
-/*
- * Color definitions for the terminal. Credits:
- * https://gitlab.com/greggink/youtube_episode_terminal_control_2/-/blob/main/tc.h
- */
+/*----------------------------------------------------------------------------*/
 
-// Bold colors
+/* Bold colors */
 #define TC_B_NRM "\x1B[1m"
 #define TC_B_GRY "\x1B[1;30m"
 #define TC_B_RED "\x1B[1;31m"
@@ -30,7 +27,7 @@
 #define TC_B_CYN "\x1B[1;36m"
 #define TC_B_WHT "\x1B[1;37m"
 
-// Normal colors
+/* Normal colors */
 #define TC_NRM "\x1B[0m"
 #define TC_BLK "\x1B[0;31m"
 #define TC_RED "\x1B[0;31m"
@@ -46,7 +43,7 @@
 #define NORM  TC_NRM
 #define SOFT  TC_GRN
 #define FCOL  TC_B_RED
-#define NFCOL TC_B_GRY
+#define NFCOL TC_B_WHT
 #else
 #define BOLD  ""
 #define NORM  ""
