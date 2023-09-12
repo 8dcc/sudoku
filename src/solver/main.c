@@ -1,4 +1,5 @@
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -20,12 +21,12 @@ int main(int argc, char** argv) {
 #ifdef __unix__
     } else {
         /*
-         * If there is no filename as argument and we are in linux, check if we are
-         * using a pipe or similar. If not, exit (don't read from user).
+         * If there is no filename as argument and we are in linux, check if we
+         * are using a pipe or similar. If not, exit (don't read from user).
          *
-         * We need to check if we are in windows because the function that allows us
-         * to check if we are using pipes is from unistd, so we would just read from
-         * stdin on windows without checking for pipes.
+         * We need to check if we are in windows because the function that
+         * allows us to check if we are using pipes is from unistd, so we would
+         * just read from stdin on windows without checking for pipes.
          */
         if (isatty(0)) {
             die("Usage: \n"
@@ -36,32 +37,30 @@ int main(int argc, char** argv) {
 #endif
     }
 
-    int arr[ROWS][COLS];
-    int* arr_p = &arr[0][0];
-    init_arr(arr_p);
+    int arr[ROWS * COLS] = { 0 };
+    init_arr(arr);
 
-    int old_empty[ROWS][COLS];
-    int* old_empty_p = &old_empty[0][0];
-    init_arr(old_empty_p);
+    if (read_arr(fd, arr) != 0)
+        die("Error reading the file.\n"
+            "fd:  %p\n"
+            "arr: %p\n",
+            fd, arr);
 
-    if (read_arr(fd, arr_p) != 0)
-        die("Error reading the file.\nfd:  %p\narr: %p\n", fd, arr_p);
+    bool empty[ROWS * COLS] = { false };
 
-    // Fill the empty array with 1's where there was an UNK for showing gray chars on
-    // the old positions after solving.
+    /* Store in the empty array the cells that had UNK on them. Used to change
+     * colors of chars on the old unknown positions after solving. */
     for (int y = 0; y < ROWS; y++)
         for (int x = 0; x < COLS; x++)
-            old_empty[y][x] = (arr[y][x] == UNK);
+            empty[y * COLS + x] = (arr[y * COLS + x] == UNK);
 
-    print_unk_arr(arr_p);
-    solve(arr_p);
+    print_arr(arr, empty);
+    printf(TC_NRM "\n| | | | | | | | | | | | | | | | | | |\n"
+                  "v v v v v v v v v v v v v v v v v v v\n\n" NORM);
 
-    printf(NFCOL "\n| | | | | | | | | | | | | | | | | | |\n"
-                 "v v v v v v v v v v v v v v v v v v v\n\n" NORM);
-
-    print_arr(arr_p, old_empty_p);
+    solve(arr);
+    print_arr(arr, empty);
 
     fclose(fd);
     return 0;
 }
-
