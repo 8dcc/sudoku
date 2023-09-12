@@ -1,8 +1,6 @@
 
-# Wanted to try compiling with different object files
-
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -Wextra
 LDFLAGS=-lncurses -ltinfo
 
 GAME_OBJS=obj/game/main.o obj/game/sudoku.o obj/game/interface.o obj/game/misc.o
@@ -11,40 +9,35 @@ GAME_BIN=sudoku.out
 SOLVER_OBJS=obj/solver/main.o obj/solver/sudoku.o obj/solver/misc.o
 SOLVER_BIN=solver.out
 
-.PHONY: clean all run
+#-------------------------------------------------------------------------------
+
+.PHONY: all run clean
 
 all: $(GAME_BIN) $(SOLVER_BIN)
 
 run: $(GAME_BIN)
 	./$<
 
-# obj folders
-obj:
-	mkdir -p obj/game
-	mkdir -p obj/solver
+clean:
+	rm -f $(SOLVER_BIN) $(GAME_BIN)
+	rm -f $(GAME_OBJS) $(SOLVER_OBJS)
 
-# -------------------------------------------
+#-------------------------------------------------------------------------------
 # Game
 
 $(GAME_BIN): $(GAME_OBJS)
+	@mkdir -p $(dir $@)
 	$(CC) -o $@ $(GAME_OBJS) $(LDFLAGS)
 
-$(GAME_OBJS): obj/game/%.o : src/game/%.c obj
+$(GAME_OBJS): obj/game/%.o : src/game/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
-# -------------------------------------------
+#-------------------------------------------------------------------------------
 # Solver
 
 $(SOLVER_BIN): $(SOLVER_OBJS)
 	$(CC) -o $@ $(SOLVER_OBJS)
 
-$(SOLVER_OBJS): obj/solver/%.o : src/solver/%.c obj
+$(SOLVER_OBJS): obj/solver/%.o : src/solver/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-# -------------------------------------------
-
-clean:
-	rm -f $(GAME_OBJS)
-	rm -f $(GAME_BIN)
-	rm -f $(SOLVER_OBJS)
-	rm -f $(SOLVER_BIN)
