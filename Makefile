@@ -29,7 +29,7 @@ $(GAME_BIN): $(GAME_OBJS)
 	@mkdir -p $(dir $@)
 	$(CC) -o $@ $(GAME_OBJS) $(LDFLAGS)
 
-$(GAME_OBJS): obj/game/%.o : src/game/%.c
+$(GAME_OBJS): obj/game/%.o: src/game/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
@@ -37,7 +37,9 @@ $(GAME_OBJS): obj/game/%.o : src/game/%.c
 # Solver
 
 $(SOLVER_BIN): $(SOLVER_OBJS)
+	@mkdir -p $(dir $@)
 	$(CC) -o $@ $(SOLVER_OBJS)
 
-$(SOLVER_OBJS): obj/solver/%.o : src/solver/%.c
+$(SOLVER_OBJS): obj/solver/%.o: src/solver/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
